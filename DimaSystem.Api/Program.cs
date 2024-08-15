@@ -4,15 +4,48 @@ var app = builder.Build();
 //EndPoints -> URL para acesso 
 //Convenções de Mercado
 //https://localhost:0000/
+//Usar versionamento
 
-app.MapGet("/products", () => "Hello World!");
-app.MapGet("/products/{id}", () => "Hello World!");
-app.MapGet("/products`/{id}/categories", () => "Hello World!");
-app.MapGet("/products/{id}/categories/{cid}/sub-categories", () => "Hello World!");
-
-app.MapPost("/categories", () => "Hello World!");
-app.MapPut("/categories", () => "Hello World!");
-app.MapDelete("/categories", () => "Hello World!");
-
+app.MapGet(
+    pattern: "/v1/products",
+    handler: (Request request, Handler handler) 
+                => handler.handle(request))
+    .WithName("Transaction Create")
+    .WithSummary("Cria uma nova transação")
+    .Produces<Response>();
 
 app.Run();
+
+//Request
+public class Request
+{
+    public string Title { get; set; } = string.Empty;
+
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public int Type { get; set; }
+
+    public decimal Amount { get; set; }
+
+    public long CategoryId { get; set; }
+    public string UserId { get; set; } = string.Empty;
+}
+//Response
+public class Response
+{
+    public int Id { get; set; }
+    public string Title { get; set; }
+}
+//Handler
+public class Handler
+{
+    public Response handle(Request request)
+    {
+        return new Response
+        {
+            Id = 1,
+            Title = request.Title
+        };
+
+    }
+}
+
