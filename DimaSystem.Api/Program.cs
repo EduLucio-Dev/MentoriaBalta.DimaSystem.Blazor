@@ -1,5 +1,14 @@
+using DimaSystem.Api.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
+var cnnStr = builder.Configuration.GetConnectionString(name:"DefaultConnection") ?? string.Empty;
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseSqlServer(cnnStr);
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
