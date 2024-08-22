@@ -3,12 +3,15 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+#region Connection Db
 var cnnStr = builder.Configuration.GetConnectionString(name:"DefaultConnection") ?? string.Empty;
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(cnnStr);
 });
+#endregion
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -18,8 +21,8 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddTransient<Handler>();
 
-
 var app = builder.Build();
+
 
 app.UseSwagger();
 app.UseSwaggerUI();
